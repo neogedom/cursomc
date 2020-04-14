@@ -1,7 +1,5 @@
 package com.viniciusgomes.cursomc.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,30 +7,22 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Produto implements Serializable {
+public class Estado implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
-    private Double preco;
+    @OneToMany(mappedBy = "estado") // estado é o atributo na classe Cidade correspondente a essa classe
+    private List<Cidade> cidades = new ArrayList<>();
 
-    @JsonBackReference
-    @ManyToMany
-    @JoinTable(name = "Produto_Categoria",
-            joinColumns = @JoinColumn(name = "produto_id"),
-            inverseJoinColumns =  @JoinColumn(name = "categoria_id"))
-    private List<Categoria> categorias = new ArrayList<>();
-
-
-    public Produto() {
+    public Estado() {
     }
 
-    public Produto(Integer id, String nome, Double preco) {
+    public Estado(Integer id, String nome) {
         this.id = id;
         this.nome = nome;
-        this.preco = preco;
     }
 
     public Integer getId() {
@@ -51,32 +41,32 @@ public class Produto implements Serializable {
         this.nome = nome;
     }
 
-    public Double getPreco() {
-        return preco;
+    public List<Cidade> getCidades() {
+        return cidades;
     }
 
-    public void setPreco(Double preco) {
-        this.preco = preco;
-    }
-
-    public List<Categoria> getCategorias() {
-        return categorias;
-    }
-
-    public void setCategorias(List<Categoria> categorias) {
-        this.categorias = categorias;
+    public void setCidades(List<Cidade> cidades) {
+        this.cidades = cidades;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Produto produto = (Produto) o;
-        return id == produto.id;
+        Estado estado = (Estado) o;
+        return id.equals(estado.id);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Estado{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                '}';
     }
 }
