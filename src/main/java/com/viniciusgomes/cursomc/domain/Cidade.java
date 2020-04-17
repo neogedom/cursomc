@@ -13,7 +13,7 @@ public class Cidade implements Serializable {
     private Integer id;
     private String nome;
     @ManyToOne
-    @JoinColumn(name = "estado_cidade") //Chave estrangeira
+    @JoinColumn(name = "estado_id") //Chave estrangeira
     private Estado estado;
 
     public Cidade() {
