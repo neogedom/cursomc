@@ -1,5 +1,7 @@
 package com.viniciusgomes.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.viniciusgomes.cursomc.domain.enums.TipoCliente;
 
 import javax.persistence.*;
@@ -19,6 +21,7 @@ public class Cliente implements Serializable {
     private String cpfOuCnpj;
     private Integer tipo;
 
+    @JsonManagedReference // CLiente serializa os endereços
     @OneToMany(mappedBy = "cliente")
     private List<Endereco> enderecos = new ArrayList<>();
     // Embora haja uma classe no modelo conceitual, não foi necessário fazer uma classe telefones, pq
