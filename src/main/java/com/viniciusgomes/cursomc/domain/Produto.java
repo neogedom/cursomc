@@ -25,6 +25,9 @@ public class Produto implements Serializable {
             inverseJoinColumns =  @JoinColumn(name = "categoria_id"))
     private List<Categoria> categorias = new ArrayList<>();
 
+    @ManyToMany
+    private List<Pedido> pedidos = new ArrayList<>();
+
 
     public Produto() {
     }
@@ -65,6 +68,16 @@ public class Produto implements Serializable {
 
     public void setCategorias(List<Categoria> categorias) {
         this.categorias = categorias;
+    }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
     }
 
     @Override

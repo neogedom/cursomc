@@ -24,11 +24,16 @@ public class Cliente implements Serializable {
     @JsonManagedReference // CLiente serializa os endereços
     @OneToMany(mappedBy = "cliente")
     private List<Endereco> enderecos = new ArrayList<>();
+
     // Embora haja uma classe no modelo conceitual, não foi necessário fazer uma classe telefones, pq
     // ela é muito simples, com relacionamento fraco e é está ligada apenas com um cliente
     @ElementCollection // Para criar um mapeamento no BD
+
     @CollectionTable(name = "telefone")
     private Set<String> telefones = new HashSet<>();
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Pedido> pedidos = new ArrayList<>();
 
     public Cliente() {
     }
@@ -95,6 +100,14 @@ public class Cliente implements Serializable {
 
     public void setTelefones(Set<String> telefones) {
         this.telefones = telefones;
+    }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
     }
 
     @Override
