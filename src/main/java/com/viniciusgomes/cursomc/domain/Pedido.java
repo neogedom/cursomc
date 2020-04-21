@@ -2,10 +2,7 @@ package com.viniciusgomes.cursomc.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 public class Pedido  implements Serializable {
@@ -18,7 +15,6 @@ public class Pedido  implements Serializable {
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido") //Evitar o erro de entidade transiente ao salvar o pedido e pagamento
     private Pagamento pagamento;
-
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
@@ -34,6 +30,9 @@ public class Pedido  implements Serializable {
             joinColumns = @JoinColumn (name = "pedido_id"),
             inverseJoinColumns = @JoinColumn (name = "produto_id"))
     private List<Produto> produtos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "id.pedido")
+    private Set<ItemPedido> itens = new HashSet<>();
 
     public Pedido() {
     }
@@ -83,6 +82,22 @@ public class Pedido  implements Serializable {
 
     public void setProdutos(List<Produto> produtos) {
         this.produtos = produtos;
+    }
+
+    public Endereco getEnderecoDeEntrega() {
+        return enderecoDeEntrega;
+    }
+
+    public void setEnderecoDeEntrega(Endereco enderecoDeEntrega) {
+        this.enderecoDeEntrega = enderecoDeEntrega;
+    }
+
+    public Set<ItemPedido> getItens() {
+        return itens;
+    }
+
+    public void setItens(Set<ItemPedido> itens) {
+        this.itens = itens;
     }
 
     @Override
