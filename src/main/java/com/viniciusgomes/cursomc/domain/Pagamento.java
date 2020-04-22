@@ -1,5 +1,7 @@
 package com.viniciusgomes.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.viniciusgomes.cursomc.domain.enums.EstadoPagamento;
 
 import javax.persistence.*;
@@ -11,12 +13,13 @@ import java.util.Objects;
 public abstract class Pagamento implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    //Sendo Um para um é necessário que o Id de pedido seja o mesmo de pagamento
+    // Sendo Um para um é necessário que o Id de pedido seja o mesmo de pagamento
     // Por isso não geramos automaticamente o Id
     @Id
     private Integer id;
     private Integer estado;
 
+    @JsonBackReference
     @OneToOne
     @JoinColumn(name = "pedido_id")
     @MapsId // usado para mapear o id de pedido para o id de pagamento e torná-lo o mesmo

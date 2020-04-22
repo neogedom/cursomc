@@ -28,7 +28,7 @@ public enum EstadoPagamento {
 
         // Pega cada valor no enum EstadoPagamento
         for (EstadoPagamento x: EstadoPagamento.values()) {
-            if(cod.equals(x)) { // compara com o valor que veio no argumento
+            if(cod.equals(x.getCod())) { // compara com o valor que veio no argumento
                 return x; // retorna se o valor for o mesmo
             }
         }
