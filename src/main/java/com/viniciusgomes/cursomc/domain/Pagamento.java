@@ -1,6 +1,5 @@
 package com.viniciusgomes.cursomc.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.viniciusgomes.cursomc.domain.enums.EstadoPagamento;
 
@@ -19,10 +18,11 @@ public abstract class Pagamento implements Serializable {
     private Integer id;
     private Integer estado;
 
-    @JsonBackReference
+
     @OneToOne
     @JoinColumn(name = "pedido_id")
     @MapsId // usado para mapear o id de pedido para o id de pagamento e torná-lo o mesmo
+    @JsonIgnore
     private Pedido pedido;
 
     public Pagamento() {

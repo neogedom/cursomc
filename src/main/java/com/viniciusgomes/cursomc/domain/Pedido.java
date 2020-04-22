@@ -18,7 +18,6 @@ public class Pedido  implements Serializable {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private Date instante;
 
-    @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido") //Evitar o erro de entidade transiente ao salvar o pedido e pagamento
     private Pagamento pagamento;
 
