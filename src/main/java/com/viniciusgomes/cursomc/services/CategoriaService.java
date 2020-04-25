@@ -2,8 +2,10 @@ package com.viniciusgomes.cursomc.services;
 
 import com.viniciusgomes.cursomc.domain.Categoria;
 import com.viniciusgomes.cursomc.repositories.CategoriaRepository;
+import com.viniciusgomes.cursomc.services.exceptions.DataIntegrityException;
 import com.viniciusgomes.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -28,5 +30,16 @@ public class CategoriaService {
     public Categoria update (Categoria obj) {
         find(obj.getId());
         return repo.save(obj);
+    }
+
+    public void delete (Integer id) {
+        try {
+            find(id);
+            repo.deleteById(id);
+        } catch (DataIntegrityViolationException ex) {
+            throw new DataIntegrityException("Não é possível excluir uma categoria que possui produtos");
+        }
+
+        repo.deleteById(id);
     }
 }
