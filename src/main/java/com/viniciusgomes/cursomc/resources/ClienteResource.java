@@ -1,6 +1,7 @@
 package com.viniciusgomes.cursomc.resources;
 
 
+import com.viniciusgomes.cursomc.domain.Cliente;
 import com.viniciusgomes.cursomc.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,9 @@ public class ClienteResource {
     private ClienteService service;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> find(@PathVariable Integer id) {
+    public ResponseEntity<Cliente> find(@PathVariable Integer id) {
 
-        return ResponseEntity.ok().body(service.buscar(id));
+        return ResponseEntity.ok().body(service.find(id));
     }
 
 }
