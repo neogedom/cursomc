@@ -6,6 +6,9 @@ import com.viniciusgomes.cursomc.services.exceptions.DataIntegrityException;
 import com.viniciusgomes.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,5 +49,14 @@ public class CategoriaService {
 
     public List<Categoria> findAll() {
         return repo.findAll();
+    }
+
+    // page = parâmetro que contém a página desejada
+    // linesPerPage = quantas linhas desejadas por página
+    // orderBy = informa por qual parâmetro quero ordenar
+    // direction = informar qual a direção desejada da ordenação (ascendente ou descendente)
+    public Page<Categoria> findPage (Integer page, Integer linesPerPage, String orderBy, String direction) {
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        return repo.findAll(pageRequest);
     }
 }
