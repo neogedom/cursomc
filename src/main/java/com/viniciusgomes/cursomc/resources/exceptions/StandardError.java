@@ -1,6 +1,7 @@
 package com.viniciusgomes.cursomc.resources.exceptions;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -13,8 +14,14 @@ public class StandardError implements Serializable {
     public String detail;
     public ZonedDateTime timeStamp;
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
+    public StandardError() {
+    }
+
+    public StandardError(String title, Integer status, String detail, Long timeStamp) {
+        this.title = title;
+        this.status = status;
+        this.detail = detail;
+        this.timeStamp = ZonedDateTime.ofInstant(Instant.ofEpochMilli(timeStamp), ZoneId.systemDefault());
     }
 
     public String getTitle() {
