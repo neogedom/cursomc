@@ -1,12 +1,19 @@
 package com.viniciusgomes.cursomc.services;
 
-import com.viniciusgomes.cursomc.domain.Categoria;
 import com.viniciusgomes.cursomc.domain.Cliente;
+import com.viniciusgomes.cursomc.domain.Cliente;
+import com.viniciusgomes.cursomc.dto.ClienteDTO;
 import com.viniciusgomes.cursomc.repositories.ClienteRepository;
+import com.viniciusgomes.cursomc.services.exceptions.DataIntegrityException;
 import com.viniciusgomes.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,5 +26,48 @@ public class ClienteService {
         Optional<Cliente> obj = repo.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException
                 ("Objeto não encontrado! Id " + id + " , Tipo: " + Cliente.class.getName()));
+    }
+
+
+    public Cliente update (Cliente obj) {
+        Cliente newObj = find(obj.getId());
+        updateData(newObj, obj);
+        return repo.save(newObj);
+    }
+
+    public void delete (Integer id) {
+        try {
+            find(id);
+            repo.deleteById(id);
+        } catch (DataIntegrityViolationException ex) {
+            throw new DataIntegrityException("Não é possível excluir porque há entidades relacionadas");
+        }
+
+        repo.deleteById(id);
+    }
+
+    public List<Cliente> findAll() {
+        return repo.findAll();
+    }
+
+    // page = parâmetro que contém a página desejada
+    // linesPerPage = quantas linhas desejadas por página
+    // orderBy = informa por qual parâmetro quero ordenar
+    // direction = informar qual a direção desejada da ordenação (ascendente ou descendente)
+    public Page<Cliente> findPage (Integer page, Integer linesPerPage, String orderBy, String direction) {
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        return repo.findAll(pageRequest);
+    }
+
+    public Cliente fromDTO(ClienteDTO objDTO) {
+
+        return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null);
+    }
+
+    // Usado para atualizar o objeto que vem pelo endpoint no formato DTO, sem CPF
+    // Busca o objeto no banco de dados e devolve esse objeto, pois ele tem o CPF
+    private void updateData (Cliente newObj, Cliente obj) {
+        newObj.setNome(obj.getNome());
+        newObj.setEmail(obj.getEmail());
     }
 }
