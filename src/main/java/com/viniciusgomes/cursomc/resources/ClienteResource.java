@@ -1,16 +1,21 @@
 package com.viniciusgomes.cursomc.resources;
 
 
+import com.viniciusgomes.cursomc.domain.Categoria;
 import com.viniciusgomes.cursomc.domain.Cliente;
 import com.viniciusgomes.cursomc.domain.Cliente;
+import com.viniciusgomes.cursomc.dto.CategoriaDTO;
 import com.viniciusgomes.cursomc.dto.ClienteDTO;
+import com.viniciusgomes.cursomc.dto.ClienteNewDTO;
 import com.viniciusgomes.cursomc.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +30,17 @@ public class ClienteResource {
     public ResponseEntity<Cliente> find(@PathVariable Integer id) {
 
         return ResponseEntity.ok().body(service.find(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> insert (@Valid @RequestBody ClienteNewDTO objDto) {
+        Cliente obj = service.fromDTO(objDto);
+        obj = service.insert(obj); // A operação save do Repository me retorna um objeto
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}") // fromCurrentRequest pega a url usada para inserir
+                .buildAndExpand(obj.getId()) //buildAndExpand usado para incluir o id no parâmetro /{id}
+                .toUri();
+        return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(value = "/{id}")
