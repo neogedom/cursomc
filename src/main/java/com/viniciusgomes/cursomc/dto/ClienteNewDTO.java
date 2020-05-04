@@ -1,21 +1,42 @@
 package com.viniciusgomes.cursomc.dto;
 
+import com.viniciusgomes.cursomc.services.validation.ClienteInsert;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
+@ClienteInsert
 public class ClienteNewDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @NotEmpty(message = "Preenchimento obrigatório")
+    @Length(min = 5, max = 120, message = "O tamanho deve ser entre 5 e 80 caracteres")
     private String nome;
+
+    @NotEmpty(message = "Preenchimento obrigatório")
+    @Email(message = "Email inválido")
     private String email;
+
+    @NotEmpty(message = "Preenchimento obrigatório")
+    // Se esse campo fosse somente CPF poderia ser validado com o @Cpf,
+    // se fosse somente CNPJ, poderia ser validado com o @Cnpj
     private String cpfOuCnpj;
+
+    // NotEmpty só se aplica para String
     private Integer tipo;
 
+    @NotEmpty(message = "Preenchimento obrigatório")
     private String logradouro;
+    @NotEmpty(message = "Preenchimento obrigatório")
     private String numero;
     private String complemento;
     private String bairro;
+    @NotEmpty(message = "Preenchimento obrigatório")
     private String cep;
 
+    @NotEmpty(message = "Preenchimento obrigatório")
     private String telefone1;
     private String telefone2;
     private String telefone3;

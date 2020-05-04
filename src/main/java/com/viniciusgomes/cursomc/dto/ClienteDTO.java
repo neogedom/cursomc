@@ -21,6 +21,9 @@ public class ClienteDTO implements Serializable {
     @Email(message = "Email inválido")
     private String email;
 
+    // Na busca de um cliente não é permitido retornar seu CPF ou CNPJ e não é necessário retornar seu
+    // tipo, por isso essas informações não fazem parte do DTO
+
     public ClienteDTO() {
 
     };
