@@ -20,13 +20,16 @@ public class Cliente implements Serializable {
     private String cpfOuCnpj;
     private Integer tipo;
 
-    @OneToMany(mappedBy = "cliente")
+
+    // CascadeType.ALL = toda a operação feita em cliente é refletida em endereços em cascata
+    // É usada quando a regra de negócio permite deleção em cascata
+    // Se a regra de negócio pedir para barrar a deleção quando há relacionamento, não incluir o atributo cascade
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Endereco> enderecos = new ArrayList<>();
 
     // Embora haja uma classe no modelo conceitual, não foi necessário fazer uma classe telefones, pq
     // ela é muito simples, com relacionamento fraco e é está ligada apenas com um cliente
-    @ElementCollection // Para criar um mapeamento no BD
-
+    @ElementCollection // Para criar um mapeamento no BD mesmo se ter uma classe telefone criada
     @CollectionTable(name = "telefone")
     private Set<String> telefones = new HashSet<>();
 
