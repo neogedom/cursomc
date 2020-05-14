@@ -16,6 +16,12 @@ public class Cliente implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
+
+    //Com o parâmetro unique = true, o BD garante que não haverá repetição no campo
+    //O problema é que só com o unique = true, temos pouco controle sobre a exceção que será lançada
+    // Ao tentar inserir um valor repetido, o programa lançará uma exceção DataIntegrityViolationException
+    // que não nos dá muitas informações
+    @Column(unique = true)
     private String email;
     private String cpfOuCnpj;
     private Integer tipo;

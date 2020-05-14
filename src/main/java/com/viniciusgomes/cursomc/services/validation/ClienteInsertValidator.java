@@ -1,9 +1,12 @@
 package com.viniciusgomes.cursomc.services.validation;
 
+import com.viniciusgomes.cursomc.domain.Cliente;
 import com.viniciusgomes.cursomc.domain.enums.TipoCliente;
 import com.viniciusgomes.cursomc.dto.ClienteNewDTO;
+import com.viniciusgomes.cursomc.repositories.ClienteRepository;
 import com.viniciusgomes.cursomc.resources.exceptions.FieldMessage;
 import com.viniciusgomes.cursomc.services.validation.utils.BR;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -14,6 +17,9 @@ import java.util.List;
 // Um validator deve implementar a classe ConstraintValidator
 // no generics <A, B>, com A sendo a classe que marca o nome da notação e B sendo o tipo da classe que aceitará a notação
 public class ClienteInsertValidator implements ConstraintValidator <ClienteInsert, ClienteNewDTO> {
+
+    @Autowired
+    private ClienteRepository repo;
 
     @Override
     public void initialize(ClienteInsert ann) {
@@ -38,6 +44,12 @@ public class ClienteInsertValidator implements ConstraintValidator <ClienteInser
             list.add(new FieldMessage("cpfOuCnpj", "CNPJ inválido"));
         }
 
+        //Lógica para testar se o email do cliente que está sendo inserido no BD já existe,
+        // garantindo unicidade ao e-mail
+        Cliente aux = repo.findByEmail(objDto.getEmail());
+        if (aux != null) {
+            list.add(new FieldMessage("email","E-mail já existente"));
+        }
 
         // É necessário transportar a lista de erros criadas para a lista de erros do framework
         // para que na captura da exceção, o framework consiga lidar com a lista e mandá-la de volta
