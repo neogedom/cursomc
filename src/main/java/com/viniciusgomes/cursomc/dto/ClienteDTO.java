@@ -1,12 +1,17 @@
 package com.viniciusgomes.cursomc.dto;
 
 import com.viniciusgomes.cursomc.domain.Cliente;
+import com.viniciusgomes.cursomc.services.validation.ClienteUpdate;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
+
+// @ClienteUpdate é uma anotação personalizada criada para fazer validações customizadas que
+// o Spring JPA não trata
+@ClienteUpdate
 // Não incluir CPF e CNPJ no DTO, pq eles não são nunca alterados
 public class ClienteDTO implements Serializable {
     private static final long serialVersionUID = 1L;
