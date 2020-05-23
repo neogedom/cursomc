@@ -30,6 +30,14 @@ public class ItemPedido implements Serializable {
         this.preco = preco;
     }
 
+    // O cálculo do subtotal de um item de pedido é a quantidade dos produtos daquele item de pedido
+    // multiplicado pelo preço unitário desse produto, menos o desconto.
+    // É importante começar com get para que o valor desse método seja reconhecido pelo JSON e serializado
+    // Dessa forma, na requisição feita pelo WebService aparecerá no JSON o atributo subtotal
+    public double getSubtotal () {
+        return (preco - desconto) * quantidade;
+    }
+
     @JsonIgnore
     public Pedido getPedido() {
         return id.getPedido();
