@@ -1,6 +1,7 @@
 package com.viniciusgomes.cursomc.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -25,6 +26,7 @@ public class Pedido  implements Serializable {
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     @JsonManagedReference
+    @JsonIgnore
     private Cliente cliente;
 
     @ManyToOne
